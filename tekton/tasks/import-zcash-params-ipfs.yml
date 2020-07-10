@@ -3,6 +3,8 @@ apiVersion: tekton.dev/v1beta1
 kind: TaskRun
 metadata:
   generateName: import-zcash-params-ipfs-
+  labels:
+    import: zcash-params-ipfs
 spec:
   taskSpec:
     params:

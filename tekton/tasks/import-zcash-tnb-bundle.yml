@@ -3,6 +3,8 @@ apiVersion: tekton.dev/v1beta1
 kind: TaskRun
 metadata:
   generateName: import-zcash-tnb-bundle-
+  labels:
+    import: zcash-tnb-bundle
 spec:
   taskSpec:
     params:

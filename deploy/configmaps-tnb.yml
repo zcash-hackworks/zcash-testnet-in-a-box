@@ -40,7 +40,7 @@ data:
     insightexplorer=0
     printtoconsole=1
     equihashsolver=tromp
-    genproclimit=4
+    genproclimit=1
     rpcuser=zcashrpc
     rpcport=38232
 ---

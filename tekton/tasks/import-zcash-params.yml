@@ -3,6 +3,8 @@ apiVersion: tekton.dev/v1beta1
 kind: TaskRun
 metadata:
   generateName: import-zcash-params-
+  labels:
+    import: zcash-params
 spec:
   workspaces:
     - name: zcash-params
