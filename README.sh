@@ -22,3 +22,25 @@ kubectl wait --for=condition=ready pods --selector app=minio --timeout=300s
 
 kubectl create -f tekton/tasks/create-minio-buckets.yml
 
+kubectl apply -f monitoring/configmap.yml
+kubectl apply -f monitoring/service.yml
+kubectl apply -f monitoring/serviceaccount.yml
+kubectl apply -f monitoring/statefulset.yml
+
+kubectl apply -f deploy/configmaps-tnb.yml
+
+kubectl create -f tekton/tasks/import-zcash-params.yml
+kubectl wait --for=condition=Succeeded taskruns -l import=zcash-params  --timeout=300s
+kubectl create -f tekton/tasks/import-zcash-tnb-bundle.yml
+kubectl wait --for=condition=Succeeded taskruns -l import=zcash-tnb-bundle  --timeout=6000s
+
+kubectl apply -f deploy/zcash-tnb-bundle-deploy.yml
+kubectl wait --for=condition=ready pods --selector version=zcash-tnb-bundle --timeout=300s
+
+kubectl get pods -l version=zcash-tnb-bundle  -o jsonpath="{.items[*].status.podIP}"
+export pod1=$(kubectl get pods -l app=zcash-with-exporter  -o jsonpath="{.items[0].metadata.name}")
+export pod2=$(kubectl get pods -l app=zcash-with-exporter  -o jsonpath="{.items[1].metadata.name}")
+
+echo 'As far as we can get until https://github.com/zcash-hackworks/zcash-testnet-in-a-box/issues/2'
+
+kubectl logs -f $pod1 -c zcashd-script
