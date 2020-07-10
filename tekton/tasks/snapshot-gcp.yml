@@ -1,0 +1,71 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: zcash-snapshot
+spec:
+  params:
+    - name: BLOCKHEIGHT
+      type: string
+      description: The block heigh to take the snaphost at
+    - name: CFGNAME
+      type: string
+      description: Name of the configmap containing the zcashd configuration
+    - name: GCP_BUCKET
+      type: string
+      description: GCP bucket name of snapshot destination
+      default: tekton-blocks
+    - name: ZCASH_DATADIR_PREFIX
+      type: string
+      default: "."
+      description: Zcash data directory prefix for "blocks" and "chainstate". Ex "testnet3" for testnet
+  volumes:
+    - name: export-dir
+      emptyDir: {}
+    - name: k8s-prod-tekton-account
+      secret:
+        secretName: k8s-prod-tekton-account
+    - name: zcashconf
+      configMap:
+        name: "$(params.CFGNAME)"
+  steps:
+    - name: sync-and-make-snapshot
+      image: electriccoinco/zcashd
+      volumeMounts:
+        - name: zcashconf
+          mountPath: /tekton/home/zcash-testnet-experimental-config
+        - name: export-dir
+          mountPath: /export-dir
+      command:
+        - bash
+        - -c
+        - |
+          set -eo pipefail
+          zcash-fetch-params
+          set -x
+          mkdir -p /tekton/home/.zcash/
+          cp /tekton/home/zcash-testnet-experimental-config/conf /tekton/home/.zcash/zcash.conf
+          cat /tekton/home/.zcash/zcash.conf
+          cd /tekton/home/.zcash/ \
+            && pwd \
+            && curl -LO https://github.com/doubtingben/zcashd-block-snapshot/releases/download/v0.0.3/zcashd-block-snapshot-v0.0.3 \
+            && chmod +x zcashd-block-snapshot-v0.0.3 \
+            && ./zcashd-block-snapshot-v0.0.3 -stop-height $(params.BLOCKHEIGHT) -export-dir /export-dir/ \
+            && pwd \
+            && find . -type f \
+            && tar zvcf /export-dir/block-snapshot-file.tgz $(params.ZCASH_DATADIR_PREFIX)/blocks/* $(params.ZCASH_DATADIR_PREFIX)/chainstate/*
+
+    - name: upload-snapshot
+      image: google/cloud-sdk:latest
+      env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /var/secrets/k8s-prod-tekton-account/k8s-prod-tekton-account-key.json
+      volumeMounts:
+        - name: k8s-prod-tekton-account
+          mountPath: /var/secrets/k8s-prod-tekton-account
+        - name: export-dir
+          mountPath: /export-dir          
+      script: |
+        #!/usr/bin/env bash
+        gcloud auth activate-service-account --key-file=/var/secrets/k8s-prod-tekton-account/k8s-prod-tekton-account-key.json
+        gsutil cp /export-dir/block-snapshot-file.tgz gs://$(params.GCP_BUCKET)/$(params.CFGNAME)-$(params.BLOCKHEIGHT).tgz

@@ -1,0 +1,61 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zcashd-tnb-artifacts
+data:
+  ZCASHD_BINARY_TGZ: zcashd-tnb-artifacts-ab2b7c0.tgz
+  ZCASHD_SNAPSHOT: zcash-testnet-miner-tnb-test3.tgz
+---  
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zcashd-master-artifacts
+data:
+  ZCASHD_BINARY_TGZ: zcashd-artifacts-ab2b7c0.tgz
+  ZCASHD_SNAPSHOT: zcash-testnet-miner-tnb-test3.tgz
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zcash-tnb-bundle
+data:
+  ZCASHD_BUNDLE_TGZ: zcash-tnb-bundle-ab2b7c0.tgz
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zcashd-testnet-miner-config
+data:
+  ZCASHD_RPCPORT: "38232"
+  zcash.conf: |
+    listen=1
+    testnet=1
+    showmetrics=0
+    logips=1
+    dns=0
+    gen=1
+    experimentalfeatures=1
+    txindex=1
+    insightexplorer=0
+    printtoconsole=1
+    equihashsolver=tromp
+    genproclimit=4
+    rpcuser=zcashrpc
+    rpcport=38232
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zcash-tnb-base
+data:
+  ZCASHD_NETWORK: "testnet"
+  ZCASHD_RPCUSER: "zcashrpc"
+  ZCASHD_LOGIPS: "1"
+  ZCASHD_EXPERIMENTALFEATURES: "1"
+  ZCASHD_TXINDEX: "1"
+  ZCASHD_INSIGHTEXPLORER: "1"
+  ZCASHD_ZMQPORT: "9904"
+  ZCASHD_RPCBIND: "0.0.0.0"
+  ZCASHD_RPCPORT: "38383"
+  ZCASHD_ALLOWIP: "0.0.0.0/0"

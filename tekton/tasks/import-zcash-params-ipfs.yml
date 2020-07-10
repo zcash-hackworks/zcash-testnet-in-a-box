@@ -1,0 +1,24 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: import-zcash-params-ipfs-
+spec:
+  taskSpec:
+    params:
+    - name: IPFSHOST
+      default: /dns/ipfs-cache/tcp/5001
+      type: string
+    - name: SNAPSHOT_HASH
+      default: QmUSFo5zgPPXXejidzFWZcxVyF3AJH6Pr9br6Xisdww1r1
+      type: string            
+    steps:    
+      - name: import-zcash-params-ipfs
+        image: ipfs/go-ipfs:v0.5.0                  
+        script: |
+          #!/bin/sh
+          ipfs --api $(params.IPFSHOST) \
+            pin add \
+            --recursive \
+            --progress \
+            $(params.SNAPSHOT_HASH)

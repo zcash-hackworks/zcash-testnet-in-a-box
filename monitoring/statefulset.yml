@@ -1,0 +1,135 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: monitoring
+  serviceName: monitoring
+  template:
+    metadata:
+      labels:
+        app: monitoring
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '9090'
+    spec:
+      serviceAccountName: prometheus
+      initContainers:
+      - name: volume-mount-hack-promethues
+        image: busybox
+        imagePullPolicy: Always      
+        command:
+        - sh
+        - -c
+        - chown -R nobody /prometheus
+        volumeMounts:
+            - mountPath: /prometheus
+              name: prometheus-data
+      containers:
+        - name: prometheus
+          image: prom/prometheus
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: 512Mi
+            requests:
+              memory: 256Mi
+          volumeMounts:
+            - mountPath: /etc/prometheus/prometheus.yml
+              name: prometheus-cfg
+              subPath: prometheus.yml
+            - mountPath: /prometheus
+              name: prometheus-data
+          ports:
+            - name: prometheus
+              containerPort: 9090
+        - name: grafana
+          image: grafana/grafana
+          imagePullPolicy: Always
+          command:
+            - bash
+            - -c
+            - grafana-cli plugins install grafana-piechart-panel && /run.sh
+          resources:
+            limits:
+              memory: 512Mi
+            requests:
+              memory: 256Mi
+          env:
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: monitoring-grafana-admin
+                  key: password                 
+          volumeMounts:
+            - mountPath: /etc/grafana/provisioning/datasources/prometheus.yml
+              name: grafana-datasources-prometheus
+              subPath: prometheus.yml
+            - mountPath: /etc/grafana/provisioning/datasources/loki.yml
+              name: grafana-datasources-loki
+              subPath: loki.yml              
+          ports:
+            - name: grafana
+              containerPort: 3000
+        - name: loki
+          #command: ["/bin/sh", "-c", "sleep 100000000"]
+          image: grafana/loki
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: 512Mi
+            requests:
+              memory: 256Mi
+          volumeMounts:
+            - mountPath: /etc/loki/
+              name: loki-cfg
+            - mountPath: /data/loki
+              name: loki-data
+          ports:
+            - name: loki
+              containerPort: 3100
+      volumes:
+        - name: prometheus-cfg
+          configMap:
+            name:  prometheus
+            items:
+              - key: config
+                path: prometheus.yml
+        - name: grafana-datasources-prometheus
+          configMap:
+            name:  grafana-datasources
+            items:
+              - key: prometheus
+                path: prometheus.yml
+        - name: grafana-datasources-loki
+          configMap:
+            name:  grafana-datasources
+            items:
+              - key: loki
+                path: loki.yml
+        - name: loki-cfg
+          configMap:
+            name:  loki
+            items:
+              - key: config
+                path: local-config.yaml
+  volumeClaimTemplates:
+    - metadata:
+        name: prometheus-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: standard
+        resources:
+          requests:
+            storage: 10Gi
+    - metadata:
+        name: loki-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: standard
+        resources:
+          requests:
+            storage: 10Gi

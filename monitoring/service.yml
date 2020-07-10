@@ -1,0 +1,20 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: monitoring
+  labels:
+    app: monitoring
+spec:
+  selector:
+    app: monitoring
+  ports:
+  - name: prometheus
+    protocol: TCP
+    port: 9090
+  - name: grafana
+    protocol: TCP
+    port: 3000
+  - name: loki
+    protocol: TCP
+    port: 3100

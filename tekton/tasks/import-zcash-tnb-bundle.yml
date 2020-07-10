@@ -1,0 +1,55 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: import-zcash-tnb-bundle-
+spec:
+  taskSpec:
+    params:
+    - name: MINIOHOST
+      default: http://minio:9000
+      type: string
+    - name: MINIOBUCKET
+      default: cache
+      type: string    
+    - name: SNAPSHOT
+      default: https://gateway.pinata.cloud/ipfs/QmXUVBsR271XNND77Y3j2T1adoKA9GwEfHRqZgFRnpK7KB
+      type: string
+    - name: SNAPSHOT_NAME
+      default: zcash-tnb-bundle-ab2b7c0.tgz
+      type: string                     
+    steps:    
+      - name: import-zcash-tnb-bundle
+        image: rclone/rclone
+        env:
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: minio-secret-key
+                key: ACCESSKEYID 
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: minio-secret-key
+                key: SECRETACCESSKEY                         
+        script: |
+          #!/bin/sh
+          env | sort
+          set -xe -o pipefail
+          whoami
+          pwd
+          cat > rclone.config <<EOT
+          [minio]
+          type = s3
+          provider = Minio
+          env_auth = true
+          region = us-east-1
+          endpoint = $(params.MINIOHOST)
+          location_constraint =
+          server_side_encryption =
+          EOT
+          cat rclone.config
+          rclone -vvv --config ./rclone.config copyurl \
+            $(params.SNAPSHOT) \
+            minio:/$(params.MINIOBUCKET)/$(params.SNAPSHOT_NAME)
+

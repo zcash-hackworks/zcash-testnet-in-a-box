@@ -1,0 +1,131 @@
+# Builds zcashd from source, with a tnbox.py run against it.
+# The tnbox.py script must produce a git diff, or the build will fail
+# Artifacts are named zcashd-tze-artifacts-${GIT_COMMIT}.tgz
+---
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: zcashd-build-tnb-
+  labels:
+    variant: tnb
+spec:
+  serviceAccountName: tekton
+  workspaces:
+    - name: venv
+      emptyDir: {}  
+  resources:
+    inputs:
+      - name: source
+        resourceSpec:
+          type: git
+          params:
+            - name: revision
+              value: master
+            - name: url
+              value: https://github.com/zcash/zcash.git
+  taskSpec:
+    params:
+      - name: MINIOHOST
+        default: http://minio:9000
+        type: string
+      - name: MINIOBUCKET
+        default: binaries
+        type: string    
+      - name: COMMIT
+        default: master
+        type: string                  
+      - name: JOBS
+        default: "8"
+        type: string
+    resources:
+      inputs:
+        - name: source
+          type: git
+    workspaces:
+        - name: venv
+          mountPath: /venv    
+    steps:
+      - name: setup-venv
+        image: electriccoinco/zcashd-build:debian10
+        script: |
+          #!/bin/bash
+          set -e -o pipefail
+          pwd
+          ls -al
+          whoami
+          python3 -m venv /venv/zcash-build-venv
+          source /venv/zcash-build-venv/bin/activate
+          python -m pip install pyblake2 pyflakes python-qpid-proton pyutil pyzmq requests simplejson
+      - name: pyflakes
+        image: electriccoinco/zcashd-build:debian10
+        script: |
+          #!/bin/bash
+          set -e -o pipefail
+          source /venv/zcash-build-venv/bin/activate
+          pwd
+          ls -l
+          cd source
+          pyflakes src zcutil
+      - name: build-with-new-magic-numbers
+        image: electriccoinco/zcash-in-a-box-runner:latest
+        env:
+          - name: ACCESSKEYID
+            valueFrom:
+              secretKeyRef:
+                name: minio-secret-key
+                key: ACCESSKEYID 
+          - name: SECRETACCESSKEY
+            valueFrom:
+              secretKeyRef:
+                name: minio-secret-key
+                key: SECRETACCESSKEY          
+        script: |
+          #!/bin/bash
+          set -e -o pipefail
+          set -x
+          git --git-dir=./source/.git rev-parse --short HEAD > /workspace/GIT_COMMIT
+          # Get the tnbox.py script
+          mkdir -p source/zcutil/tnbox/
+          mc config host add minio $(params.MINIOHOST) ${ACCESSKEYID} ${SECRETACCESSKEY}
+          mc cp minio/binaries/tnbox.py source/zcutil/tnbox/tnbox.py
+          #curl -sL https://raw.githubusercontent.com/benzcash/zcash/no-branch-id-tnbox/zcutil/tnbox/tnbox.py -o source/zcutil/tnbox/tnbox.py
+          # Run the tnbox.py script
+          source /venv/zcash-build-venv/bin/activate
+          cd source/zcutil/tnbox/
+          python ./tnbox.py
+          cd /workspace/source
+          # Test that the script make changes, exit if it didn't
+          if git diff --exit-code;then echo "No diff, exiting";exit 1;fi          
+          # Build zcashd
+          CONFIGURE_FLAGS="--enable-online-rust" ./zcutil/build.sh -j$(params.JOBS)
+      - name: upload-file
+        image: minio/mc
+        env:
+          - name: ACCESSKEYID
+            valueFrom:
+              secretKeyRef:
+                name: minio-secret-key
+                key: ACCESSKEYID 
+          - name: SECRETACCESSKEY
+            valueFrom:
+              secretKeyRef:
+                name: minio-secret-key
+                key: SECRETACCESSKEY                        
+        script: |
+          #!/bin/sh
+          env | sort
+          set -xe -o pipefail
+          export GIT_COMMIT=$(cat /workspace/GIT_COMMIT)
+          pwd
+          ls -al
+          ls -al /workspace
+          ls -al /workspace/source
+          ls -al /workspace/source/src
+          mc config host add minio $(params.MINIOHOST) ${ACCESSKEYID} ${SECRETACCESSKEY}
+          tar --strip-components 3 \
+            -zvcf ./zcashd-tnb-artifacts-${GIT_COMMIT}.tgz \
+            /workspace/source/src/zcashd \
+            /workspace/source/src/zcash-cli \
+            /workspace/source/src/zcash-gtest \
+            /workspace/source/src/zcash-tx
+          mc cp ./zcashd-tnb-artifacts-${GIT_COMMIT}.tgz minio/$(params.MINIOBUCKET)/
