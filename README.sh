@@ -43,4 +43,9 @@ export pod2=$(kubectl get pods -l app=zcash-with-exporter  -o jsonpath="{.items[
 
 echo 'As far as we can get until https://github.com/zcash-hackworks/zcash-testnet-in-a-box/issues/2'
 
-kubectl logs -f $pod1 -c zcashd-script
+kubectl exec -ti $pod1 -c zcashd-script -- bash
+
+## IN POD1
+ip a
+## ADD THE OTHER ONE
+${HOME}/workspace/source/src/zcash-cli -rpcpassword=${ZCASHD_RPCPASSWORD} addnode "10.244.0.32:18233" "add"

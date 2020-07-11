@@ -20,7 +20,7 @@ kind: ConfigMap
 metadata:
   name: zcash-tnb-bundle
 data:
-  ZCASHD_BUNDLE_TGZ: zcash-tnb-bundle-ab2b7c0.tgz
+  ZCASHD_BUNDLE_TGZ: zcash-tnb-bundle-ab2b7c0-997026.tgz
 ---
 apiVersion: v1
 kind: ConfigMap

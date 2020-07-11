@@ -15,10 +15,10 @@ spec:
       default: cache
       type: string    
     - name: SNAPSHOT
-      default: https://gateway.pinata.cloud/ipfs/QmXUVBsR271XNND77Y3j2T1adoKA9GwEfHRqZgFRnpK7KB
+      default: https://gateway.pinata.cloud/ipfs/QmesMq1WNPcDt2GWktRw8amBcTs886oYrA4XMKMRf6mweU
       type: string
     - name: SNAPSHOT_NAME
-      default: zcash-tnb-bundle-ab2b7c0.tgz
+      default: zcash-tnb-bundle-ab2b7c0-997026.tgz
       type: string                     
     steps:    
       - name: import-zcash-tnb-bundle

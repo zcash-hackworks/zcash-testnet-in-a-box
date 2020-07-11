@@ -66,9 +66,10 @@ spec:
               tar zxvf ${HOME}/zcash-tnb-bundle/zcash-testnet-miner-data-dir.tgz -C ${HOME}/.zcash/
               # Copy the binaries
               tar zxvf ${HOME}/zcash-tnb-bundle/zcashd-tnb-artifacts.tgz -C ${HOME}
-              ${HOME}/workspace/source/src/zcashd -rpcpassword=${ZCASHD_RPCPASSWORD}
+              sleep 10
+              eval exec ${HOME}/workspace/source/src/zcashd -rpcpassword=${ZCASHD_RPCPASSWORD}
         - name: zcashd-exporter
-          image: electriccoinco/zcashd_exporter
+          image: electriccoinco/zcashd_exporter:v0.3
           command:
             - /go/bin/zcashd_exporter
           args:
