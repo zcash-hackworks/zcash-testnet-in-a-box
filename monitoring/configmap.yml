@@ -2,14 +2,29 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  name: grafana-ini
+data:
+  ini: |
+    [auth]
+    default_home_dashboard_path = /etc/grafana/provisioning/dashboards/zcash-tnb.json
+    [auth.anonymous]
+    enabled = true
+    [paths]
+    provisioning = /etc/grafana/provisioning
+    [log]
+    level = debug
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
   name: grafana-dashboards
 data:
-  zcash: |
+  default: |
     apiVersion: 1
     providers:
-    - name: 'Zcashd exporter'
+    - name: 'Zcashd TNB'
       orgId: 1
-      folder: 'zcashd'
+      folder: ''
       folderUid: ''
       type: file
       disableDeletion: false
@@ -17,7 +32,7 @@ data:
       updateIntervalSeconds: 10
       allowUiUpdates: false
       options:
-        path: /etc/grafana/provisioning/dashboards/zcashd
+        path: /etc/grafana/provisioning/dashboards/zcash-tnb.json
 ---
 apiVersion: v1
 kind: ConfigMap
