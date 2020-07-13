@@ -42,7 +42,6 @@ sleep 2
 kubectl wait --for=condition=ready pods --selector version=zcash-tnb-bundle --timeout=300s
 ########################################################################################
 
-kubectl get pods -l version=zcash-tnb-bundle  -o jsonpath="{.items[*].status.podIP}"
 export pod1=$(kubectl get pods -l app=zcash-with-exporter  -o jsonpath="{.items[0].metadata.name}")
 export pod2=$(kubectl get pods -l app=zcash-with-exporter  -o jsonpath="{.items[1].metadata.name}")
 
@@ -50,9 +49,13 @@ echo 'As far as we can get until https://github.com/zcash-hackworks/zcash-testne
 
 # Watch the logs for zcashd to start
 kubectl logs -f $pod1 -c zcashd-script
-kubectl exec -ti $pod1 -c zcashd-script -- bash
+# `CreateNewBlock(): total size 1000`? GTG
+# Don't get it in 5 minutes, failed!
 
+# Get the IPs
+kubectl get pods -l version=zcash-tnb-bundle  -o jsonpath="{.items[*].status.podIP}"
+kubectl exec -ti $pod1 -c zcashd-script -- bash
 ## IN POD1
 ip a
-## ADD THE OTHER ONE
-${HOME}/workspace/source/src/zcash-cli -rpcpassword=${ZCASHD_RPCPASSWORD} addnode "10.244.0.26:18233" "add"
+## EDIT POD2's IP in this line and peer them
+${HOME}/workspace/source/src/zcash-cli -rpcpassword=${ZCASHD_RPCPASSWORD} addnode "10.244.0.19:18233" "add"
