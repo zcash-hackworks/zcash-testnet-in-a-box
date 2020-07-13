@@ -65,12 +65,21 @@ spec:
                   name: monitoring-grafana-admin
                   key: password                 
           volumeMounts:
+            - mountPath: /etc/grafana/grafana.ini
+              name: grafana-ini
+              subPath: ini
             - mountPath: /etc/grafana/provisioning/datasources/prometheus.yml
               name: grafana-datasources-prometheus
               subPath: prometheus.yml
             - mountPath: /etc/grafana/provisioning/datasources/loki.yml
               name: grafana-datasources-loki
-              subPath: loki.yml              
+              subPath: loki.yml
+            - mountPath: /etc/grafana/provisioning/dashboards/default.yaml
+              name: grafana-dashboards
+              subPath: default
+            - mountPath: /etc/grafana/provisioning/dashboards/zcash-tnb.json
+              name: grafana-dashboard-zcash-tnb
+              subPath: grafana-dashboard-zcash-tnb.json
           ports:
             - name: grafana
               containerPort: 3000
@@ -98,6 +107,9 @@ spec:
             items:
               - key: config
                 path: prometheus.yml
+        - name: grafana-ini
+          configMap:
+            name:  grafana-ini
         - name: grafana-datasources-prometheus
           configMap:
             name:  grafana-datasources
@@ -110,6 +122,12 @@ spec:
             items:
               - key: loki
                 path: loki.yml
+        - name: grafana-dashboards
+          configMap:
+            name:  grafana-dashboards
+        - name: grafana-dashboard-zcash-tnb
+          configMap:
+            name:  grafana-dashboard-zcash-tnb
         - name: loki-cfg
           configMap:
             name:  loki

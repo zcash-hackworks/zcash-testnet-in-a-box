@@ -1,0 +1,2454 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "description": "Dashboard to monitor a group of zcashd instances each with a corresponding zcashd_exporter providing prometheus metrics",
+    "editable": true,
+    "gnetId": 12561,
+    "graphTooltip": 0,
+    "id": 2,
+    "iteration": 1594502438549,
+    "links": [],
+    "panels": [
+      {
+        "datasource": "Prometheus",
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "align": "center"
+            },
+            "mappings": [
+              {
+                "from": "",
+                "id": 0,
+                "operator": "",
+                "text": "",
+                "to": "",
+                "type": 1
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "version"
+              },
+              "properties": [
+                {
+                  "id": "custom.align",
+                  "value": "right"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "instance"
+              },
+              "properties": [
+                {
+                  "id": "custom.align",
+                  "value": null
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 7,
+          "x": 0,
+          "y": 0
+        },
+        "id": 6,
+        "options": {
+          "showHeader": true,
+          "sortBy": [
+            {
+              "desc": false,
+              "displayName": "instance"
+            }
+          ]
+        },
+        "pluginVersion": "7.0.6",
+        "targets": [
+          {
+            "expr": "zcashd_info",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Zcashd version",
+        "transformations": [
+          {
+            "id": "labelsToFields",
+            "options": {}
+          },
+          {
+            "id": "filterFieldsByName",
+            "options": {
+              "include": {
+                "names": [
+                  "kubernetes_pod_name",
+                  "version"
+                ]
+              }
+            }
+          }
+        ],
+        "type": "table"
+      },
+      {
+        "aliasColors": {},
+        "breakPoint": "50%",
+        "cacheTimeout": null,
+        "combine": {
+          "label": "Others",
+          "threshold": 0
+        },
+        "datasource": "Prometheus",
+        "fieldConfig": {
+          "defaults": {
+            "custom": {}
+          },
+          "overrides": []
+        },
+        "fontSize": "80%",
+        "format": "short",
+        "gridPos": {
+          "h": 6,
+          "w": 8,
+          "x": 7,
+          "y": 0
+        },
+        "id": 272,
+        "interval": null,
+        "legend": {
+          "show": true,
+          "values": true
+        },
+        "legendType": "Right side",
+        "links": [],
+        "maxDataPoints": 1,
+        "nullPointMode": "connected",
+        "pieType": "pie",
+        "strokeWidth": 1,
+        "targets": [
+          {
+            "expr": "topk(1, zcash_wallet_balance{type=\"private\"})",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "private",
+            "refId": "A"
+          },
+          {
+            "expr": "topk(1, zcash_wallet_balance{type=\"transparent\"})",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "transparent",
+            "refId": "B"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Wallet total balance",
+        "type": "grafana-piechart-panel",
+        "valueName": "current"
+      },
+      {
+        "datasource": "Prometheus",
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "custom": {},
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 6,
+          "x": 15,
+          "y": 0
+        },
+        "id": 264,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          }
+        },
+        "pluginVersion": "7.0.6",
+        "repeat": "pod",
+        "repeatDirection": "v",
+        "scopedVars": {
+          "pod": {
+            "selected": false,
+            "text": "zcash-tnb-bundle-f47cfd79d-w5w8t",
+            "value": "zcash-tnb-bundle-f47cfd79d-w5w8t"
+          }
+        },
+        "targets": [
+          {
+            "expr": "zcash_blocks{kubernetes_pod_name=~\"$pod\"}",
+            "interval": "",
+            "legendFormat": "{{ kubernetes_pod_name }}",
+            "refId": "A"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "$pod",
+        "type": "stat"
+      },
+      {
+        "datasource": "Prometheus",
+        "fieldConfig": {
+          "defaults": {
+            "custom": {},
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 10
+                }
+              ]
+            },
+            "unit": "percentunit"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 3,
+          "x": 21,
+          "y": 0
+        },
+        "id": 86,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "center",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          }
+        },
+        "pluginVersion": "7.0.6",
+        "repeat": "pod",
+        "repeatDirection": "v",
+        "scopedVars": {
+          "pod": {
+            "selected": false,
+            "text": "zcash-tnb-bundle-f47cfd79d-w5w8t",
+            "value": "zcash-tnb-bundle-f47cfd79d-w5w8t"
+          }
+        },
+        "targets": [
+          {
+            "expr": "zcash_verification_progress{kubernetes_pod_name=\"$pod\"}",
+            "interval": "",
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "$pod",
+        "type": "stat"
+      },
+      {
+        "datasource": "Prometheus",
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "custom": {},
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 6,
+          "x": 15,
+          "y": 4
+        },
+        "id": 294,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          }
+        },
+        "pluginVersion": "7.0.6",
+        "repeat": null,
+        "repeatDirection": "v",
+        "repeatIteration": 1594502438549,
+        "repeatPanelId": 264,
+        "scopedVars": {
+          "pod": {
+            "selected": false,
+            "text": "zcash-tnb-bundle-f47cfd79d-6wfqt",
+            "value": "zcash-tnb-bundle-f47cfd79d-6wfqt"
+          }
+        },
+        "targets": [
+          {
+            "expr": "zcash_blocks{kubernetes_pod_name=~\"$pod\"}",
+            "interval": "",
+            "legendFormat": "{{ kubernetes_pod_name }}",
+            "refId": "A"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "$pod",
+        "type": "stat"
+      },
+      {
+        "datasource": "Prometheus",
+        "fieldConfig": {
+          "defaults": {
+            "custom": {},
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 10
+                }
+              ]
+            },
+            "unit": "percentunit"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 3,
+          "x": 21,
+          "y": 4
+        },
+        "id": 296,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "center",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          }
+        },
+        "pluginVersion": "7.0.6",
+        "repeat": null,
+        "repeatDirection": "v",
+        "repeatIteration": 1594502438549,
+        "repeatPanelId": 86,
+        "scopedVars": {
+          "pod": {
+            "selected": false,
+            "text": "zcash-tnb-bundle-f47cfd79d-6wfqt",
+            "value": "zcash-tnb-bundle-f47cfd79d-6wfqt"
+          }
+        },
+        "targets": [
+          {
+            "expr": "zcash_verification_progress{kubernetes_pod_name=\"$pod\"}",
+            "interval": "",
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "$pod",
+        "type": "stat"
+      },
+      {
+        "datasource": "Prometheus",
+        "fieldConfig": {
+          "defaults": {
+            "custom": {},
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 8,
+          "x": 7,
+          "y": 6
+        },
+        "id": 274,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          }
+        },
+        "pluginVersion": "7.0.6",
+        "targets": [
+          {
+            "expr": "topk(1, zcash_wallet_balance{type=\"private\"})",
+            "interval": "",
+            "legendFormat": "private",
+            "refId": "A"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "private balance",
+        "type": "stat"
+      },
+      {
+        "datasource": "Prometheus",
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "align": null,
+              "displayMode": "auto"
+            },
+            "mappings": [
+              {
+                "from": "",
+                "id": 0,
+                "operator": "",
+                "text": "",
+                "to": "",
+                "type": 1
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 7,
+          "x": 0,
+          "y": 7
+        },
+        "id": 4,
+        "options": {
+          "frameIndex": 3,
+          "showHeader": true,
+          "sortBy": [
+            {
+              "desc": false,
+              "displayName": "instance"
+            }
+          ]
+        },
+        "pluginVersion": "7.0.6",
+        "repeat": null,
+        "targets": [
+          {
+            "expr": "zcashd_deprecation_height",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Deprecation Height",
+        "transformations": [
+          {
+            "id": "labelsToFields",
+            "options": {}
+          },
+          {
+            "id": "filterFieldsByName",
+            "options": {
+              "include": {
+                "names": [
+                  "instance",
+                  "Value"
+                ]
+              }
+            }
+          }
+        ],
+        "type": "table"
+      },
+      {
+        "datasource": "Prometheus",
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "custom": {},
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 6,
+          "x": 15,
+          "y": 8
+        },
+        "id": 295,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          }
+        },
+        "pluginVersion": "7.0.6",
+        "repeat": null,
+        "repeatDirection": "v",
+        "repeatIteration": 1594502438549,
+        "repeatPanelId": 264,
+        "scopedVars": {
+          "pod": {
+            "selected": false,
+            "text": "zcash-tnb-bundle-f47cfd79d-wt59g",
+            "value": "zcash-tnb-bundle-f47cfd79d-wt59g"
+          }
+        },
+        "targets": [
+          {
+            "expr": "zcash_blocks{kubernetes_pod_name=~\"$pod\"}",
+            "interval": "",
+            "legendFormat": "{{ kubernetes_pod_name }}",
+            "refId": "A"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "$pod",
+        "type": "stat"
+      },
+      {
+        "datasource": "Prometheus",
+        "fieldConfig": {
+          "defaults": {
+            "custom": {},
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 10
+                }
+              ]
+            },
+            "unit": "percentunit"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 3,
+          "x": 21,
+          "y": 8
+        },
+        "id": 297,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "center",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          }
+        },
+        "pluginVersion": "7.0.6",
+        "repeat": null,
+        "repeatDirection": "v",
+        "repeatIteration": 1594502438549,
+        "repeatPanelId": 86,
+        "scopedVars": {
+          "pod": {
+            "selected": false,
+            "text": "zcash-tnb-bundle-f47cfd79d-wt59g",
+            "value": "zcash-tnb-bundle-f47cfd79d-wt59g"
+          }
+        },
+        "targets": [
+          {
+            "expr": "zcash_verification_progress{kubernetes_pod_name=\"$pod\"}",
+            "interval": "",
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "$pod",
+        "type": "stat"
+      },
+      {
+        "datasource": "Prometheus",
+        "fieldConfig": {
+          "defaults": {
+            "custom": {},
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 8,
+          "x": 7,
+          "y": 9
+        },
+        "id": 275,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          }
+        },
+        "pluginVersion": "7.0.6",
+        "targets": [
+          {
+            "expr": "topk(1, zcash_wallet_balance{type=\"transparent\"})",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "transparent",
+            "refId": "A"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "transparent balance",
+        "type": "stat"
+      },
+      {
+        "collapsed": true,
+        "datasource": "Prometheus",
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 12
+        },
+        "id": 179,
+        "panels": [
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "fieldConfig": {
+              "defaults": {
+                "custom": {}
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 24,
+              "x": 0,
+              "y": 13
+            },
+            "hiddenSeries": false,
+            "id": 181,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "pod",
+            "repeatDirection": "v",
+            "scopedVars": {
+              "pod": {
+                "selected": false,
+                "text": "zcash-tnb-bundle-f47cfd79d-w5w8t",
+                "value": "zcash-tnb-bundle-f47cfd79d-w5w8t"
+              }
+            },
+            "seriesOverrides": [
+              {
+                "$$hashKey": "object:1952",
+                "alias": "zcash_mempool_size",
+                "lines": false,
+                "points": true,
+                "yaxis": 2
+              }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "zcash_mempool_bytes{kubernetes_pod_name=\"$pod\"}",
+                "interval": "",
+                "legendFormat": "zcash_mempool_bytes",
+                "refId": "A"
+              },
+              {
+                "expr": "zcash_mempool_size{kubernetes_pod_name=\"$pod\"}",
+                "interval": "",
+                "legendFormat": "zcash_mempool_size",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$pod",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "transparent": true,
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "fieldConfig": {
+              "defaults": {
+                "custom": {}
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 24,
+              "x": 0,
+              "y": 19
+            },
+            "hiddenSeries": false,
+            "id": 278,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "repeat": null,
+            "repeatDirection": "v",
+            "repeatIteration": 1594489536097,
+            "repeatPanelId": 181,
+            "scopedVars": {
+              "pod": {
+                "selected": false,
+                "text": "zcash-tnb-bundle-f47cfd79d-6wfqt",
+                "value": "zcash-tnb-bundle-f47cfd79d-6wfqt"
+              }
+            },
+            "seriesOverrides": [
+              {
+                "$$hashKey": "object:1952",
+                "alias": "zcash_mempool_size",
+                "lines": false,
+                "points": true,
+                "yaxis": 2
+              }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "zcash_mempool_bytes{kubernetes_pod_name=\"$pod\"}",
+                "interval": "",
+                "legendFormat": "zcash_mempool_bytes",
+                "refId": "A"
+              },
+              {
+                "expr": "zcash_mempool_size{kubernetes_pod_name=\"$pod\"}",
+                "interval": "",
+                "legendFormat": "zcash_mempool_size",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$pod",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "transparent": true,
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          }
+        ],
+        "title": "Mempool",
+        "type": "row"
+      },
+      {
+        "collapsed": false,
+        "datasource": "Prometheus",
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 13
+        },
+        "id": 154,
+        "panels": [],
+        "title": "Peer traffic",
+        "type": "row"
+      },
+      {
+        "aliasColors": {},
+        "bars": true,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "Prometheus",
+        "fieldConfig": {
+          "defaults": {
+            "custom": {}
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 8,
+          "x": 0,
+          "y": 14
+        },
+        "hiddenSeries": false,
+        "id": 156,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": false,
+          "total": false,
+          "values": false
+        },
+        "lines": false,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "repeat": "pod",
+        "scopedVars": {
+          "pod": {
+            "selected": false,
+            "text": "zcash-tnb-bundle-f47cfd79d-w5w8t",
+            "value": "zcash-tnb-bundle-f47cfd79d-w5w8t"
+          }
+        },
+        "seriesOverrides": [
+          {
+            "$$hashKey": "object:1623",
+            "alias": "/sent/",
+            "transform": "negative-Y"
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "rate(zcash_peer_bytes_sent{kubernetes_pod_name=\"$pod\"}[1m])",
+            "interval": "",
+            "legendFormat": "{{ addr }} - {{ subver }} recv",
+            "refId": "A"
+          },
+          {
+            "expr": "rate(zcash_peer_bytes_sent{kubernetes_pod_name=\"$pod\"}[1m])",
+            "interval": "",
+            "legendFormat": "{{ addr }} - {{ subver }} sent",
+            "refId": "B"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "$pod",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:1605",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:1606",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": true,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "Prometheus",
+        "fieldConfig": {
+          "defaults": {
+            "custom": {}
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 8,
+          "x": 8,
+          "y": 14
+        },
+        "hiddenSeries": false,
+        "id": 298,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": false,
+          "total": false,
+          "values": false
+        },
+        "lines": false,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "repeat": null,
+        "repeatIteration": 1594502438549,
+        "repeatPanelId": 156,
+        "scopedVars": {
+          "pod": {
+            "selected": false,
+            "text": "zcash-tnb-bundle-f47cfd79d-6wfqt",
+            "value": "zcash-tnb-bundle-f47cfd79d-6wfqt"
+          }
+        },
+        "seriesOverrides": [
+          {
+            "$$hashKey": "object:1623",
+            "alias": "/sent/",
+            "transform": "negative-Y"
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "rate(zcash_peer_bytes_sent{kubernetes_pod_name=\"$pod\"}[1m])",
+            "interval": "",
+            "legendFormat": "{{ addr }} - {{ subver }} recv",
+            "refId": "A"
+          },
+          {
+            "expr": "rate(zcash_peer_bytes_sent{kubernetes_pod_name=\"$pod\"}[1m])",
+            "interval": "",
+            "legendFormat": "{{ addr }} - {{ subver }} sent",
+            "refId": "B"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "$pod",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:1605",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:1606",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": true,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "Prometheus",
+        "fieldConfig": {
+          "defaults": {
+            "custom": {}
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 8,
+          "x": 16,
+          "y": 14
+        },
+        "hiddenSeries": false,
+        "id": 299,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": false,
+          "total": false,
+          "values": false
+        },
+        "lines": false,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "repeat": null,
+        "repeatIteration": 1594502438549,
+        "repeatPanelId": 156,
+        "scopedVars": {
+          "pod": {
+            "selected": false,
+            "text": "zcash-tnb-bundle-f47cfd79d-wt59g",
+            "value": "zcash-tnb-bundle-f47cfd79d-wt59g"
+          }
+        },
+        "seriesOverrides": [
+          {
+            "$$hashKey": "object:1623",
+            "alias": "/sent/",
+            "transform": "negative-Y"
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "rate(zcash_peer_bytes_sent{kubernetes_pod_name=\"$pod\"}[1m])",
+            "interval": "",
+            "legendFormat": "{{ addr }} - {{ subver }} recv",
+            "refId": "A"
+          },
+          {
+            "expr": "rate(zcash_peer_bytes_sent{kubernetes_pod_name=\"$pod\"}[1m])",
+            "interval": "",
+            "legendFormat": "{{ addr }} - {{ subver }} sent",
+            "refId": "B"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "$pod",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:1605",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:1606",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "collapsed": true,
+        "datasource": "Prometheus",
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 22
+        },
+        "id": 74,
+        "panels": [
+          {
+            "datasource": "Prometheus",
+            "fieldConfig": {
+              "defaults": {
+                "custom": {},
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    }
+                  ]
+                }
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 16
+            },
+            "id": 68,
+            "options": {
+              "colorMode": "value",
+              "graphMode": "area",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              }
+            },
+            "pluginVersion": "7.0.6",
+            "repeat": "pod",
+            "scopedVars": {
+              "pod": {
+                "selected": false,
+                "text": "zcash-tnb-bundle-f47cfd79d-w5w8t",
+                "value": "zcash-tnb-bundle-f47cfd79d-w5w8t"
+              }
+            },
+            "targets": [
+              {
+                "expr": "zcashd_deprecation_height{kubernetes_pod_name=\"$pod\"} - zcash_blocks{kubernetes_pod_name=\"$pod\"}",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "$pod",
+            "type": "stat"
+          },
+          {
+            "datasource": "Prometheus",
+            "fieldConfig": {
+              "defaults": {
+                "custom": {},
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    }
+                  ]
+                }
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 12,
+              "y": 16
+            },
+            "id": 281,
+            "options": {
+              "colorMode": "value",
+              "graphMode": "area",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              }
+            },
+            "pluginVersion": "7.0.6",
+            "repeat": null,
+            "repeatIteration": 1594489536097,
+            "repeatPanelId": 68,
+            "scopedVars": {
+              "pod": {
+                "selected": false,
+                "text": "zcash-tnb-bundle-f47cfd79d-6wfqt",
+                "value": "zcash-tnb-bundle-f47cfd79d-6wfqt"
+              }
+            },
+            "targets": [
+              {
+                "expr": "zcashd_deprecation_height{kubernetes_pod_name=\"$pod\"} - zcash_blocks{kubernetes_pod_name=\"$pod\"}",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "$pod",
+            "type": "stat"
+          }
+        ],
+        "title": "Blocks until deprecation",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "datasource": "Prometheus",
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 23
+        },
+        "id": 50,
+        "panels": [
+          {
+            "datasource": "Prometheus",
+            "fieldConfig": {
+              "defaults": {
+                "custom": {},
+                "mappings": [
+                  {
+                    "from": "",
+                    "id": 0,
+                    "operator": "",
+                    "text": "",
+                    "to": "",
+                    "type": 1
+                  }
+                ],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    }
+                  ]
+                }
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 8,
+              "x": 0,
+              "y": 24
+            },
+            "id": 44,
+            "options": {
+              "colorMode": "value",
+              "graphMode": "area",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "mean"
+                ],
+                "fields": "",
+                "values": false
+              }
+            },
+            "pluginVersion": "7.0.6",
+            "repeat": "pod",
+            "scopedVars": {
+              "pod": {
+                "selected": false,
+                "text": "zcash-tnb-bundle-f47cfd79d-w5w8t",
+                "value": "zcash-tnb-bundle-f47cfd79d-w5w8t"
+              }
+            },
+            "targets": [
+              {
+                "expr": "count(zcash_peer_version{kubernetes_pod_name=\"$pod\"})",
+                "instant": true,
+                "interval": "",
+                "legendFormat": "",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "$pod",
+            "type": "stat"
+          },
+          {
+            "datasource": "Prometheus",
+            "fieldConfig": {
+              "defaults": {
+                "custom": {},
+                "mappings": [
+                  {
+                    "from": "",
+                    "id": 0,
+                    "operator": "",
+                    "text": "",
+                    "to": "",
+                    "type": 1
+                  }
+                ],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    }
+                  ]
+                }
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 8,
+              "x": 8,
+              "y": 24
+            },
+            "id": 292,
+            "options": {
+              "colorMode": "value",
+              "graphMode": "area",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "mean"
+                ],
+                "fields": "",
+                "values": false
+              }
+            },
+            "pluginVersion": "7.0.6",
+            "repeat": null,
+            "repeatIteration": 1594495252422,
+            "repeatPanelId": 44,
+            "scopedVars": {
+              "pod": {
+                "selected": false,
+                "text": "zcash-tnb-bundle-f47cfd79d-6wfqt",
+                "value": "zcash-tnb-bundle-f47cfd79d-6wfqt"
+              }
+            },
+            "targets": [
+              {
+                "expr": "count(zcash_peer_version{kubernetes_pod_name=\"$pod\"})",
+                "instant": true,
+                "interval": "",
+                "legendFormat": "",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "$pod",
+            "type": "stat"
+          },
+          {
+            "datasource": "Prometheus",
+            "fieldConfig": {
+              "defaults": {
+                "custom": {},
+                "mappings": [
+                  {
+                    "from": "",
+                    "id": 0,
+                    "operator": "",
+                    "text": "",
+                    "to": "",
+                    "type": 1
+                  }
+                ],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    }
+                  ]
+                }
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 8,
+              "x": 16,
+              "y": 24
+            },
+            "id": 293,
+            "options": {
+              "colorMode": "value",
+              "graphMode": "area",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "mean"
+                ],
+                "fields": "",
+                "values": false
+              }
+            },
+            "pluginVersion": "7.0.6",
+            "repeat": null,
+            "repeatIteration": 1594495252422,
+            "repeatPanelId": 44,
+            "scopedVars": {
+              "pod": {
+                "selected": false,
+                "text": "zcash-tnb-bundle-f47cfd79d-wt59g",
+                "value": "zcash-tnb-bundle-f47cfd79d-wt59g"
+              }
+            },
+            "targets": [
+              {
+                "expr": "count(zcash_peer_version{kubernetes_pod_name=\"$pod\"})",
+                "instant": true,
+                "interval": "",
+                "legendFormat": "",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "$pod",
+            "type": "stat"
+          }
+        ],
+        "repeat": null,
+        "title": "Number of Peers",
+        "type": "row"
+      },
+      {
+        "collapsed": false,
+        "datasource": "Prometheus",
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 24
+        },
+        "id": 34,
+        "panels": [],
+        "title": "Peer info",
+        "type": "row"
+      },
+      {
+        "datasource": "Prometheus",
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "align": null
+            },
+            "mappings": [
+              {
+                "from": "",
+                "id": 0,
+                "operator": "",
+                "text": "",
+                "to": "",
+                "type": 1
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 12,
+          "x": 0,
+          "y": 25
+        },
+        "id": 14,
+        "maxPerRow": 2,
+        "options": {
+          "showHeader": true
+        },
+        "pluginVersion": "7.0.6",
+        "repeat": "pod",
+        "repeatDirection": "h",
+        "scopedVars": {
+          "pod": {
+            "selected": false,
+            "text": "zcash-tnb-bundle-f47cfd79d-w5w8t",
+            "value": "zcash-tnb-bundle-f47cfd79d-w5w8t"
+          }
+        },
+        "targets": [
+          {
+            "expr": "zcash_peer_version{kubernetes_pod_name=\"$pod\"}",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "B"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "$pod",
+        "transformations": [
+          {
+            "id": "labelsToFields",
+            "options": {}
+          },
+          {
+            "id": "filterFieldsByName",
+            "options": {
+              "include": {
+                "names": [
+                  "addr",
+                  "banscore",
+                  "inbound",
+                  "subver"
+                ]
+              }
+            }
+          }
+        ],
+        "type": "table"
+      },
+      {
+        "datasource": "Prometheus",
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "align": null
+            },
+            "mappings": [
+              {
+                "from": "",
+                "id": 0,
+                "operator": "",
+                "text": "",
+                "to": "",
+                "type": 1
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 12,
+          "x": 12,
+          "y": 25
+        },
+        "id": 300,
+        "maxPerRow": 2,
+        "options": {
+          "showHeader": true
+        },
+        "pluginVersion": "7.0.6",
+        "repeat": null,
+        "repeatDirection": "h",
+        "repeatIteration": 1594502438549,
+        "repeatPanelId": 14,
+        "scopedVars": {
+          "pod": {
+            "selected": false,
+            "text": "zcash-tnb-bundle-f47cfd79d-6wfqt",
+            "value": "zcash-tnb-bundle-f47cfd79d-6wfqt"
+          }
+        },
+        "targets": [
+          {
+            "expr": "zcash_peer_version{kubernetes_pod_name=\"$pod\"}",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "B"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "$pod",
+        "transformations": [
+          {
+            "id": "labelsToFields",
+            "options": {}
+          },
+          {
+            "id": "filterFieldsByName",
+            "options": {
+              "include": {
+                "names": [
+                  "addr",
+                  "banscore",
+                  "inbound",
+                  "subver"
+                ]
+              }
+            }
+          }
+        ],
+        "type": "table"
+      },
+      {
+        "datasource": "Prometheus",
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "align": null
+            },
+            "mappings": [
+              {
+                "from": "",
+                "id": 0,
+                "operator": "",
+                "text": "",
+                "to": "",
+                "type": 1
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 12,
+          "x": 0,
+          "y": 34
+        },
+        "id": 301,
+        "maxPerRow": 2,
+        "options": {
+          "showHeader": true
+        },
+        "pluginVersion": "7.0.6",
+        "repeat": null,
+        "repeatDirection": "h",
+        "repeatIteration": 1594502438549,
+        "repeatPanelId": 14,
+        "scopedVars": {
+          "pod": {
+            "selected": false,
+            "text": "zcash-tnb-bundle-f47cfd79d-wt59g",
+            "value": "zcash-tnb-bundle-f47cfd79d-wt59g"
+          }
+        },
+        "targets": [
+          {
+            "expr": "zcash_peer_version{kubernetes_pod_name=\"$pod\"}",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "B"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "$pod",
+        "transformations": [
+          {
+            "id": "labelsToFields",
+            "options": {}
+          },
+          {
+            "id": "filterFieldsByName",
+            "options": {
+              "include": {
+                "names": [
+                  "addr",
+                  "banscore",
+                  "inbound",
+                  "subver"
+                ]
+              }
+            }
+          }
+        ],
+        "type": "table"
+      },
+      {
+        "collapsed": true,
+        "datasource": "Prometheus",
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 43
+        },
+        "id": 24,
+        "panels": [
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "fieldConfig": {
+              "defaults": {
+                "custom": {}
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 27
+            },
+            "hiddenSeries": false,
+            "id": 8,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "show": false,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "maxPerRow": 2,
+            "nullPointMode": "null",
+            "options": {
+              "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "pod",
+            "repeatDirection": "h",
+            "scopedVars": {
+              "pod": {
+                "selected": false,
+                "text": "zcash-tnb-bundle-f47cfd79d-w5w8t",
+                "value": "zcash-tnb-bundle-f47cfd79d-w5w8t"
+              }
+            },
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "zcash_blocks{kubernetes_pod_name=\"$pod\"}",
+                "interval": "",
+                "legendFormat": "{{ instance }}",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$pod height",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "fieldConfig": {
+              "defaults": {
+                "custom": {}
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 12,
+              "y": 27
+            },
+            "hiddenSeries": false,
+            "id": 290,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "show": false,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "maxPerRow": 2,
+            "nullPointMode": "null",
+            "options": {
+              "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1594495252422,
+            "repeatPanelId": 8,
+            "scopedVars": {
+              "pod": {
+                "selected": false,
+                "text": "zcash-tnb-bundle-f47cfd79d-6wfqt",
+                "value": "zcash-tnb-bundle-f47cfd79d-6wfqt"
+              }
+            },
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "zcash_blocks{kubernetes_pod_name=\"$pod\"}",
+                "interval": "",
+                "legendFormat": "{{ instance }}",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$pod height",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "fieldConfig": {
+              "defaults": {
+                "custom": {}
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 35
+            },
+            "hiddenSeries": false,
+            "id": 291,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "show": false,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "maxPerRow": 2,
+            "nullPointMode": "null",
+            "options": {
+              "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1594495252422,
+            "repeatPanelId": 8,
+            "scopedVars": {
+              "pod": {
+                "selected": false,
+                "text": "zcash-tnb-bundle-f47cfd79d-wt59g",
+                "value": "zcash-tnb-bundle-f47cfd79d-wt59g"
+              }
+            },
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "zcash_blocks{kubernetes_pod_name=\"$pod\"}",
+                "interval": "",
+                "legendFormat": "{{ instance }}",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$pod height",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "datasource": "Loki",
+            "fieldConfig": {
+              "defaults": {
+                "custom": {}
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 26,
+              "w": 24,
+              "x": 0,
+              "y": 43
+            },
+            "id": 208,
+            "options": {
+              "showLabels": true,
+              "showTime": false,
+              "sortOrder": "Descending",
+              "wrapLogMessage": false
+            },
+            "targets": [
+              {
+                "expr": "{filename=\"/home/zcash/.zcash/debug.log\"}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Zcash logsfiles",
+            "transparent": true,
+            "type": "logs"
+          }
+        ],
+        "title": "Block Height",
+        "type": "row"
+      }
+    ],
+    "refresh": "30s",
+    "schemaVersion": 25,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "allValue": null,
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": "Prometheus",
+          "definition": "label_values(up{job=\"zcashd_exporter\"},kubernetes_pod_name)",
+          "hide": 0,
+          "includeAll": true,
+          "label": null,
+          "multi": false,
+          "name": "pod",
+          "options": [],
+          "query": "label_values(up{job=\"zcashd_exporter\"},kubernetes_pod_name)",
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        }
+      ]
+    },
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ]
+    },
+    "timezone": "",
+    "title": "Zcash Testnet in a box",
+    "uid": "mIrc97CCz",
+    "version": 2
+  }

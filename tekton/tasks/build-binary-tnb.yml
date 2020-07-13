@@ -8,6 +8,7 @@ metadata:
   generateName: zcashd-build-tnb-
   labels:
     variant: tnb
+    build: zcashd-tnb
 spec:
   serviceAccountName: tekton
   workspaces:
@@ -20,7 +21,7 @@ spec:
           type: git
           params:
             - name: revision
-              value: master
+              value: v2.1.2-3
             - name: url
               value: https://github.com/zcash/zcash.git
   taskSpec:

@@ -246,16 +246,6 @@ kubectl port-forward svc/monitoring 3000:3000
 
 Open a browser to http://localhost:3000
 
-Login as `admin` with the generated password secret.
-
-From the left side menu, select `Dashboards`, then `Manage`.
-
-Select `Import` from the top right.
-
-In the text box labeld `Import via grafana.com` enter `12561` and click `Load`.
-
-Select the prometheus and loki sources and import!
-
 ### TODO
 Naming on the bundle isn't right
 Manual "addnode" to get the peers talking.
