@@ -64,7 +64,7 @@ spec:
               #### Copy the configmap, because reasons ####
               cp /workspace/zcashconf/zcash.conf ${HOME}/.zcash/zcash.conf
               cat ${HOME}/.zcash/zcash.conf
-              sleep infinity 7 # Lucky!
+              sleep 7 # Lucky!
               ${HOME}/workspace/source/src/zcashd -rpcpassword=${ZCASHD_RPCPASSWORD}
         - name: zcashd-exporter
           image: electriccoinco/zcashd_exporter:v0.3
