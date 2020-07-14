@@ -17,7 +17,7 @@ kubectl create -f tekton/tasks/create-monitoring-grafana-admin-secret.yml
 kubectl apply -f minio/minio-standalone-pvc.yaml
 kubectl apply -f minio/minio-standalone-service.yaml
 kubectl apply -f minio/minio-standalone-deployment.yaml
-sleep 2
+sleep 5
 kubectl wait --for=condition=ready pods --selector app=minio --timeout=300s
 ########################################################################################
 
@@ -32,8 +32,8 @@ kubectl create configmap grafana-dashboard-zcash-tnb --from-file=./monitoring/gr
 kubectl apply -f deploy/configmaps-tnb.yml
 
 kubectl create -f tekton/tasks/import-zcash-params.yml
-kubectl create -f tekton/tasks/import-zcash-tnb-bundle.yml
-sleep 2
+kubectl create -f tekton/tasks/import-zcash-tnb-files.yml
+sleep 5
 kubectl wait --for=condition=Succeeded taskruns -l import=zcash-tnb-bundle  --timeout=6000s
 ########################################################################################
 
@@ -58,4 +58,4 @@ kubectl exec -ti $pod1 -c zcashd-script -- bash
 ## IN POD1
 ip a
 ## EDIT POD2's IP in this line and peer them
-${HOME}/workspace/source/src/zcash-cli -rpcpassword=${ZCASHD_RPCPASSWORD} addnode "10.244.0.19:18233" "add"
+${HOME}/workspace/source/src/zcash-cli -rpcpassword=${ZCASHD_RPCPASSWORD} addnode "10.244.0.40:18233" "add"

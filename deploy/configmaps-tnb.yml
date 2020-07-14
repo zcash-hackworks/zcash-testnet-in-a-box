@@ -2,25 +2,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: zcashd-tnb-artifacts
-data:
-  ZCASHD_BINARY_TGZ: zcashd-tnb-artifacts-ab2b7c0.tgz
-  ZCASHD_SNAPSHOT: zcash-testnet-miner-tnb-test3.tgz
----  
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: zcashd-master-artifacts
-data:
-  ZCASHD_BINARY_TGZ: zcashd-artifacts-ab2b7c0.tgz
-  ZCASHD_SNAPSHOT: zcash-testnet-miner-tnb-test3.tgz
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
   name: zcash-tnb-bundle
 data:
-  ZCASHD_BUNDLE_TGZ: zcash-tnb-bundle-ab2b7c0-999170.tgz
+  ARCHIVE_NAME: zcash-tnb-bundle-ab2b7c0-999170.tgz
+  ARCHIVE_HTTP_SRC: https://gateway.pinata.cloud/ipfs/QmdmR3ShZnsWviFCLzWbmRwWoyuBrtRYzSpQfXNVEJ3RaD
+  SNAPSHOT_NAME: zcash-testnet-miner-snap.tgz
+  SNAPSHOT_HTTP_SRC:  https://gateway.pinata.cloud/ipfs/QmaZAmRfF8v9PhTJi8Ae8Kc6K41itbXZRt4UsHGnk7eKgZ
 ---
 apiVersion: v1
 kind: ConfigMap

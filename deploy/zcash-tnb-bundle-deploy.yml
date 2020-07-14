@@ -51,22 +51,20 @@ spec:
               env | sort
               mkdir ${HOME}/.zcash
               cd ${HOME}/.zcash
-              #### Copy the configmap, because reasons ####
-              cp /workspace/zcashconf/zcash.conf ${HOME}/.zcash/zcash.conf
-              cat ${HOME}/.zcash/zcash.conf
               #### Configure the minio client ####
               mc config host add zcash-in-a-box http://minio:9000 minio ${Z_SECRETACCESSKEY} --api S3v4
               #### Get zcash network parameters ####
               mc cp -r zcash-in-a-box/cache/zcash-params/ ${HOME}/.zcash-params/
-              #### Get zcash-tnb-bundle ####
+              #### Get zcash-tnb-binaries ####
               #sleep infinity
-              mc cp zcash-in-a-box/cache/${ZCASHD_BUNDLE_TGZ} ${HOME}/zcash-tnb-bundle.tgz
-              tar zxvf ${HOME}/zcash-tnb-bundle.tgz -C ${HOME}
-              # Copy the zcash-data-dir contents
-              tar zxvf ${HOME}/zcash-tnb-bundle/zcash-testnet-miner-data-dir.tgz -C ${HOME}/.zcash/
-              # Copy the binaries
-              tar zxvf ${HOME}/zcash-tnb-bundle/zcashd-tnb-artifacts.tgz -C ${HOME}
-              sleep 10
+              mc cp zcash-in-a-box/binaries/${ARCHIVE_NAME} ${HOME}/zcash-tnb-archive.tgz
+              mc cp zcash-in-a-box/cache/${SNAPSHOT_NAME} ${HOME}/zcash-tnb-snapshot.tgz
+              tar zxvf ${HOME}/zcash-tnb-archive.tgz -C ${HOME}
+              tar zxvf ${HOME}/zcash-tnb-snapshot.tgz -C ${HOME}/.zcash/
+              #### Copy the configmap, because reasons ####
+              cp /workspace/zcashconf/zcash.conf ${HOME}/.zcash/zcash.conf
+              cat ${HOME}/.zcash/zcash.conf
+              #sleep infinity
               eval exec ${HOME}/workspace/source/src/zcashd -rpcpassword=${ZCASHD_RPCPASSWORD}
         - name: zcashd-exporter
           image: electriccoinco/zcashd_exporter:v0.3
