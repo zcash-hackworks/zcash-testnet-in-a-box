@@ -4,10 +4,10 @@ kind: ConfigMap
 metadata:
   name: zcash-tnb-bundle
 data:
-  ARCHIVE_NAME: zcash-tnb-bundle-ab2b7c0-999170.tgz
-  ARCHIVE_HTTP_SRC: https://gateway.pinata.cloud/ipfs/QmdmR3ShZnsWviFCLzWbmRwWoyuBrtRYzSpQfXNVEJ3RaD
-  SNAPSHOT_NAME: zcash-testnet-miner-snap.tgz
-  SNAPSHOT_HTTP_SRC:  https://gateway.pinata.cloud/ipfs/QmaZAmRfF8v9PhTJi8Ae8Kc6K41itbXZRt4UsHGnk7eKgZ
+  ARCHIVE_NAME: zcashd-tnb-artifacts-d292376.tgz
+  ARCHIVE_HTTP_SRC: https://gateway.pinata.cloud/ipfs/QmemvQmN8bdqH2S7EZQ3hCXsmoGbTXNcN5vaL98CVQ2yXv
+  SNAPSHOT_NAME: zcash-testnet-miner-1009419.tgz
+  SNAPSHOT_HTTP_SRC: https://gateway.pinata.cloud/ipfs/QmZwuN84PVBKqZQV1kuJSCvYX9L31vh2PJAA2129wdrZ37
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -15,6 +15,7 @@ metadata:
   name: zcashd-testnet-miner-config
 data:
   ZCASHD_RPCPORT: "38232"
+  ZCASHD_RPCUSER: "zcashrpc"
   zcash.conf: |
     listen=1
     testnet=1
@@ -44,5 +45,5 @@ data:
   ZCASHD_INSIGHTEXPLORER: "1"
   ZCASHD_ZMQPORT: "9904"
   ZCASHD_RPCBIND: "0.0.0.0"
-  ZCASHD_RPCPORT: "38383"
+  ZCASHD_RPCPORT: "38232"
   ZCASHD_ALLOWIP: "0.0.0.0/0"

@@ -17,7 +17,7 @@ kubectl create -f tekton/tasks/create-monitoring-grafana-admin-secret.yml
 kubectl apply -f minio/minio-standalone-pvc.yaml
 kubectl apply -f minio/minio-standalone-service.yaml
 kubectl apply -f minio/minio-standalone-deployment.yaml
-sleep 5
+sleep 10
 kubectl wait --for=condition=ready pods --selector app=minio --timeout=300s
 ########################################################################################
 
@@ -33,19 +33,18 @@ kubectl apply -f deploy/configmaps-tnb.yml
 
 kubectl create -f tekton/tasks/import-zcash-params.yml
 kubectl create -f tekton/tasks/import-zcash-tnb-files.yml
-sleep 5
+sleep 10
 kubectl wait --for=condition=Succeeded taskruns -l import=zcash-tnb-bundle  --timeout=6000s
 ########################################################################################
 
 kubectl apply -f deploy/zcash-tnb-bundle-deploy.yml
-sleep 2
+kubectl apply -f deploy/zcash-peers.yml
+sleep 10
 kubectl wait --for=condition=ready pods --selector version=zcash-tnb-bundle --timeout=300s
 ########################################################################################
 
 export pod1=$(kubectl get pods -l app=zcash-with-exporter  -o jsonpath="{.items[0].metadata.name}")
 export pod2=$(kubectl get pods -l app=zcash-with-exporter  -o jsonpath="{.items[1].metadata.name}")
-
-echo 'As far as we can get until https://github.com/zcash-hackworks/zcash-testnet-in-a-box/issues/2'
 
 # Watch the logs for zcashd to start
 kubectl logs -f $pod1 -c zcashd-script
@@ -53,9 +52,9 @@ kubectl logs -f $pod1 -c zcashd-script
 # Don't get it in 5 minutes, failed!
 
 # Get the IPs
-kubectl get pods -l version=zcash-tnb-bundle  -o jsonpath="{.items[*].status.podIP}"
-kubectl exec -ti $pod1 -c zcashd-script -- bash
+# kubectl get pods -l version=zcash-tnb-bundle  -o jsonpath="{.items[*].status.podIP}"
+# kubectl exec -ti $pod1 -c zcashd-script -- bash
 ## IN POD1
-ip a
+# ip a
 ## EDIT POD2's IP in this line and peer them
-${HOME}/workspace/source/src/zcash-cli -rpcpassword=${ZCASHD_RPCPASSWORD} addnode "10.244.0.40:18233" "add"
+# ${HOME}/workspace/source/src/zcash-cli -rpcpassword=${ZCASHD_RPCPASSWORD} addnode "10.244.0.40:18233" "add"

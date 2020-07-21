@@ -21,7 +21,7 @@ spec:
           type: git
           params:
             - name: revision
-              value: v2.1.2-3
+              value: v3.1.0-rc2
             - name: url
               value: https://github.com/zcash/zcash.git
   taskSpec:

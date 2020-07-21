@@ -1,0 +1,49 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zcashd-peers
+spec:
+  selector:
+    matchLabels:
+      app: zcashd-peers
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: zcashd-peers
+    spec:
+      serviceAccountName: zcashd-peers
+      containers:
+      - name: zcashd-peers
+        image: electriccoinco/zcashd-peers@sha256:9bd1f86e310ec0474a676b1e54164ee6bc458036cf358e5a01f01442c7999eda
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: zcashd-peers
+rules:
+  - apiGroups: [""]
+    resources:
+      - configmaps
+      - pods
+      - secrets
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: zcashd-peers
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: zcashd-peers
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: zcashd-peers
+subjects:
+- kind: ServiceAccount
+  name: zcashd-peers
+  namespace: default
