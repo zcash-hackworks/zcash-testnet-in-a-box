@@ -23,6 +23,7 @@ data:
 
 ## Deployment
 
+Install [kind](https://kind.sigs.k8s.io/docs/user/quick-start/)  
 See [./README.sh](./README.sh)
 
 ## Post deployment
