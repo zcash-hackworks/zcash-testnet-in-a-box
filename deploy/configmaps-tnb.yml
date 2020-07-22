@@ -4,10 +4,10 @@ kind: ConfigMap
 metadata:
   name: zcash-tnb-bundle
 data:
-  ARCHIVE_NAME: zcashd-tnb-artifacts-d292376.tgz
-  ARCHIVE_HTTP_SRC: https://gateway.pinata.cloud/ipfs/QmemvQmN8bdqH2S7EZQ3hCXsmoGbTXNcN5vaL98CVQ2yXv
-  SNAPSHOT_NAME: zcash-testnet-miner-1009419.tgz
-  SNAPSHOT_HTTP_SRC: https://gateway.pinata.cloud/ipfs/QmZwuN84PVBKqZQV1kuJSCvYX9L31vh2PJAA2129wdrZ37
+  ARCHIVE_NAME: zcashd-tnb-artifacts-d058568.tgz
+  ARCHIVE_HTTP_SRC: "https://gateway.pinata.cloud/ipfs/QmWwGVqBkWHFd6AqYZSsZZG4tQ9AoiQAG2i9pGoqGp2Mhp"
+  SNAPSHOT_NAME: zcash-testnet-miner-1012074.tgz
+  SNAPSHOT_HTTP_SRC: "https://gateway.pinata.cloud/ipfs/QmfFnBZ1S8kNp2qsgjNcb3e3hPWHenuVPUFxizymaovDEB"
 ---
 apiVersion: v1
 kind: ConfigMap

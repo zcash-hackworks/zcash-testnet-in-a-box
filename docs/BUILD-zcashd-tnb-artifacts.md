@@ -17,15 +17,19 @@ MINIO_SECRETACCESSKEY=$(kubectl get secrets minio-secret-key -o jsonpath="{.data
 ### Configure mc client
 ```
 mc config host add \
-  zcash-testnet-in-a-box http://localhost:9000 minio MINIO_SECRETACCESSKEY \
+  zcash-testnet-in-a-box http://localhost:9000 minio $MINIO_SECRETACCESSKEY \
   --api S3v4
 ```
 ### Upload the script
 ```
-mc cp ./tools/tnbox.py zcash-in-a-box/binaries/
+mc cp ./tools/tnbox.py zcash-testnet-in-a-box/binaries/
 ```
 
 ## Create the tekton task for the tnb build
+
+Edit `tekton/tasks/build-binary-tnb.yml` for the git version to build from.
+
+Then run it:
 ```
 kubectl create -f tekton/tasks/build-binary-tnb.yml
 ```
