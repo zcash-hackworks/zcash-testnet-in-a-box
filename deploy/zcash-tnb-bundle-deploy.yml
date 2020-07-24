@@ -30,6 +30,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: zcash-tnb-bundle
+            - configMapRef:
+                name: zcashd-testnet-miner-config
           env:
             - name: Z_SECRETACCESSKEY
               valueFrom:
@@ -58,6 +60,7 @@ spec:
               #### Get zcash-tnb-binaries ####
               #sleep infinity
               mc cp zcash-in-a-box/binaries/${ARCHIVE_NAME} ${HOME}/zcash-tnb-archive.tgz
+              #mc cp zcash-in-a-box/binaries/${WALLET_NAME} ${HOME}/.zcash/wallet.dat
               mc cp zcash-in-a-box/cache/${SNAPSHOT_NAME} ${HOME}/zcash-tnb-snapshot.tgz
               tar zxvf ${HOME}/zcash-tnb-archive.tgz -C ${HOME}
               tar zxvf ${HOME}/zcash-tnb-snapshot.tgz -C ${HOME}/.zcash/

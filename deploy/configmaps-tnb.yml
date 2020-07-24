@@ -6,8 +6,8 @@ metadata:
 data:
   ARCHIVE_NAME: zcashd-tnb-artifacts-d058568.tgz
   ARCHIVE_HTTP_SRC: "https://gateway.pinata.cloud/ipfs/QmWwGVqBkWHFd6AqYZSsZZG4tQ9AoiQAG2i9pGoqGp2Mhp"
-  SNAPSHOT_NAME: zcash-testnet-miner-1012074.tgz
-  SNAPSHOT_HTTP_SRC: "https://gateway.pinata.cloud/ipfs/QmfFnBZ1S8kNp2qsgjNcb3e3hPWHenuVPUFxizymaovDEB"
+  SNAPSHOT_NAME: zcash-testnet-miner-1014515.tgz
+  SNAPSHOT_HTTP_SRC: "https://gateway.pinata.cloud/ipfs/QmYj6AN8WziHikUjjoYTS1bGESTQkzXoMyzRKpa1H5gYv5"
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -16,6 +16,8 @@ metadata:
 data:
   ZCASHD_RPCPORT: "38232"
   ZCASHD_RPCUSER: "zcashrpc"
+  ZCASHD_MINETOADDRESS: "ztestsapling1xlnh6kjnv2up7at0ume3mx8sk85g0f0v02xfyzmeq4fm9tqpkp8lwhu9qqkumfmqa79yzdrlfyf"
+  WALLET_NAME: "wallet-zdrlfyf"
   zcash.conf: |
     listen=1
     testnet=1
