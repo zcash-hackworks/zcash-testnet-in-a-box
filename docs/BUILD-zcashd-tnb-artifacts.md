@@ -1,6 +1,6 @@
 # Building zcashd testnet in a box artifacts
 
-The only change made to a "testnet in a box" artifacts is changing the network magic numbers defined in `chainparams.cpp`.
+The only change made to a "testnet in a box" artifacts is changing the network magic numbers defined in `chainparams.cpp` and the branchID in `upgrades.cpp`.
 
 To produce a new build, the `tnbox.py` script included in this repo is run against a zcash git clone, then a normal build process is performed.
 
