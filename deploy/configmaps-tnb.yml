@@ -23,7 +23,9 @@ data:
     testnet=1
     showmetrics=0
     logips=1
+    maxtipage=10000000
     dns=0
+    dnsseed=0
     gen=1
     experimentalfeatures=1
     txindex=1
