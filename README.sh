@@ -41,6 +41,9 @@ kubectl apply -f deploy/zcash-tnb-bundle-deploy.yml
 kubectl apply -f deploy/zcash-peers.yml
 sleep 10
 kubectl wait --for=condition=ready pods --selector version=zcash-tnb-bundle --timeout=300s
+
+########################################################################################
+###### CLUSTER IS NOW DEPLOYED, BELOW COMMANDS HELP VIEW POD ACTIVITY ##################
 ########################################################################################
 
 export pod1=$(kubectl get pods -l app=zcash-with-exporter  -o jsonpath="{.items[0].metadata.name}")
