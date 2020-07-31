@@ -66,7 +66,6 @@ See https://zcash-rpc.github.io/ for a list current of Zcash RPCs
 As the nodes are modified with their given zcash.confs, users can scale pods to add more peers to the cluster:
 ```
 kubectl scale --replicas=4 deploy/zcash-tnb-bundle
-kubectl logs -f $pod1 -c zcashd-script
 ```
 This will create 4 pods in the cluster. This can scale up to N pods depending on your system resources.
 
