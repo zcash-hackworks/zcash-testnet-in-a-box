@@ -77,4 +77,8 @@ wget https://github.com/lensapp/lens/releases/download/v3.5.1/Lens-3.5.1.AppImag
 chmod +x Lens-3.5.1.AppImage
 sudo mv Lens-3.5.1.AppImage /usr/sbin/lens
 ```
-Once installed successfully, start Lens and select the cluster from the 'Add clusters' + button in the IDE. This will allow you to interact with the pods from a dashboard. This can be useful when a developer needs to view logs and debug information, for a given set of pods. 
+Once installed successfully, start Lens and select the cluster from the 'Add clusters' + button in the IDE. This will allow you to interact with the pods from a dashboard. This can be useful when a developer needs to view logs and debug information, for a given set of pods.
+
+### Creating custom bundles
+Depending on your network needs, you will likely have a few different zcash.confs to simulate miners and other nodes. 
+For details of what goes into a bundle see: https://github.com/zcash-hackworks/zcash-testnet-in-a-box/blob/master/docs/BUILD-zcashd-tnb-artifacts.md 
