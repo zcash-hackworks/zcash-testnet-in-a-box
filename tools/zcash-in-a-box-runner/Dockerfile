@@ -17,3 +17,5 @@ RUN curl -LO https://dist.ipfs.io/go-ipfs/${GO_IPFS_VERSION}/go-ipfs_${GO_IPFS_V
     && cp rclone-${RCLONE_VERSION}-linux-amd64/rclone /usr/local/bin/rclone \
     && chmod +x /usr/local/bin/rclone \
     && rm rclone-${RCLONE_VERSION}-linux-amd64.zip
+RUN curl -LO https://github.com/tektoncd/cli/releases/download/v0.12.1/tkn_0.12.1_Linux_x86_64.tar.gz \
+    && tar xvzf tkn_0.12.1_Linux_x86_64.tar.gz -C /usr/local/bin/ tkn
