@@ -27,7 +27,17 @@ kubectl create -f tekton/tasks/import-zcash-params-ipfs.yml
 kubectl create -f tekton/tasks/import-zcash-tnb-artifacts-ipfs.yml 
 kubectl create -f tekton/tasks/import-zcash-snapshot-ipfs.yml
 
-sleep 10
+## Watch the taskrun statuses
+kubectl get taskruns
+# This should return something like
+# NAME                                    SUCCEEDED   REASON      STARTTIME   COMPLETIONTIME
+# create-secret-2kk7k                     True        Succeeded   17m         16m
+# create-secret-6pf6r                     True        Succeeded   17m         16m
+# import-zcash-params-ipfs-vq6k6          True        Succeeded   10m         8m28s
+# import-zcash-snapshot-ipfs-5t6vl        True        Succeeded   10m         6m52s
+# import-zcash-tnb-artifacts-ipfs-djr6z   True        Succeeded   10m         10m
+
+# Use a wait command for scripting
 kubectl wait --for=condition=Succeeded taskruns -l import=zcash-snapshot-ipfs  --timeout=6000s
 
 ## Taking forever? Add a peer that has these CIDs
