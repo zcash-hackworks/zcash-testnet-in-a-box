@@ -1,0 +1,70 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ipfs-cache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ipfs-cache
+  serviceName: ipfs-cache
+  template:
+    metadata:
+      labels:
+        app: ipfs-cache
+    spec:        
+      containers:     
+        - name: ipfs
+          image: "ipfs/go-ipfs:v0.6.0"
+          resources:
+            limits:
+              memory: 3Gi
+            requests:
+              memory: 1536Mi
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: IPFS_FD_MAX
+              value: "4096"
+          ports:
+            - containerPort: 4001
+              name: swarm
+              protocol: TCP
+            - name: ipfs-api
+              containerPort: 5001
+            - name: ipfs-gateway
+              containerPort: 8080
+          livenessProbe:
+            tcpSocket:
+              port: swarm
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            periodSeconds: 15
+          volumeMounts:
+            - name: ipfs-cache-storage
+              mountPath: /data/ipfs
+  volumeClaimTemplates:
+    - metadata:
+        name: ipfs-cache-storage
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 60Gi
+        volumeMode: Filesystem
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ipfs-cache
+spec:
+  type: ClusterIP
+  ports:
+    - name: ipfs-api
+      port: 5001
+      targetPort: 5001
+    - name: api-gateway
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: ipfs-cache

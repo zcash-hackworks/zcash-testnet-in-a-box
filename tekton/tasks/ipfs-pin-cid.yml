@@ -1,0 +1,32 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: ipfs-pin-cid
+spec:
+  params:
+    - name: IPFSHOST
+      default: /dns/ipfs-cache/tcp/5001
+      type: string
+    - name: CONFIGMAP
+      default: zcash-tnb-bundle
+      type: string
+    - name: CONFIGMAP_IPFS_KEY
+      type: string
+  stepTemplate:
+    env:
+      - name: IPFSCID
+        valueFrom:
+          configMapKeyRef:
+            name: $(inputs.params.CONFIGMAP)
+            key: $(inputs.params.CONFIGMAP_IPFS_KEY)
+  steps:    
+    - name: ipfs-pin-cid
+      image: ipfs/go-ipfs:v0.6.0                  
+      script: |
+        #!/bin/sh
+        ipfs --api $(params.IPFSHOST) \
+          pin add \
+          --recursive \
+          --progress \
+          ${IPFSCID}
