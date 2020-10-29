@@ -19,3 +19,12 @@ RUN curl -LO https://dist.ipfs.io/go-ipfs/${GO_IPFS_VERSION}/go-ipfs_${GO_IPFS_V
     && rm rclone-${RCLONE_VERSION}-linux-amd64.zip
 RUN curl -LO https://github.com/tektoncd/cli/releases/download/v0.12.1/tkn_0.12.1_Linux_x86_64.tar.gz \
     && tar xvzf tkn_0.12.1_Linux_x86_64.tar.gz -C /usr/local/bin/ tkn
+# Kubectl
+RUN curl -L "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl" \
+    -o /usr/local/bin/kubectl \
+    && chmod +x /usr/local/bin/kubectl
+# yq
+ARG YQ_VERSION=3.4.1
+RUN curl -L https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64 \
+    -o /usr/local/bin/yq \
+    && chmod +x /usr/local/bin/yq
