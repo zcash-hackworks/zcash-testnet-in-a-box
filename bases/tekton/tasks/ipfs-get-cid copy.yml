@@ -1,0 +1,24 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: ipfs-swarm-connect
+spec:    
+  params:
+    - name: PEER_ADDRESS
+      type: string
+      description: The IPFS Peer Multiaddress for the connection.
+    - name: ipfs-api-service
+      type: string
+      description: The ipfs service dns name
+      default: /dns/ipfs-cache/tcp/5001
+  steps:
+    - name: ipfs-get-cid
+      image: electriccoinco/zcash-in-a-box-runner
+      script: |
+        #!/bin/bash
+        set -exo pipefail
+
+        ipfs --api $(params.ipfs-api-service) \
+          swarm connect \
+          $(params.PEER_ADDRESS)
