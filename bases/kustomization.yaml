@@ -12,3 +12,4 @@ resources:
   - ./tekton/tasks/ipfs-pin-cid.yml
   - ./deploy/zcash-peers.yml
   - ./deploy/zcash-tnb-bundle-deploy.yml
+  - ./tekton/tasks/zcash-build-tnb.yml
