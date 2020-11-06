@@ -10,6 +10,7 @@ resources:
   - ./monitoring/statefulset.yml
   - ./deploy/configmaps-tnb.yml
   - ./tekton/tasks/ipfs-pin-cid.yml
+  - ./tekton/tasks/ipfs-swarm-peers.yml
   - ./deploy/zcash-peers.yml
   - ./deploy/zcash-tnb-bundle-deploy.yml
   - ./tekton/tasks/zcash-build-tnb.yml
