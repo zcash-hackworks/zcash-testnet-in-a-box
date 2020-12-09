@@ -1,0 +1,15 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: import-zcash-params-ipfs-
+  labels:
+    import: zcash-params-ipfs
+spec:
+  taskRef:
+    name: ipfs-pin-cid
+  params:
+    - name: IPFSHOST
+      value: /dns/ipfs-cache/tcp/5001
+    - name: CONFIGMAP_IPFS_KEY
+      value: ZCASH_PARAMS_IPFSCID

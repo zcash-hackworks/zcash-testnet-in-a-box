@@ -1,0 +1,66 @@
+# Builds zcashd from source, with a tnbox.py run against it.
+# The tnbox.py script must produce a git diff, or the build will fail
+# Artifacts are named zcashd-tze-artifacts-${GIT_COMMIT}.tgz
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: zcashd-build-tnb
+  labels:
+    variant: tnb
+    build: zcashd
+spec:
+  resources:
+    inputs:
+      - name: source
+        type: git
+  params:                
+    - name: JOBS
+      default: "8"
+      type: string
+    - name: ipfs-api-service
+      type: string
+      description: The ipfs service dns name
+      default: /dns/ipfs-cache/tcp/5001
+    - name: TNBOX_SCRIPT_CID
+      default: QmdcXSthqb89VF3CwtFXYHiSVZTCrggWPsDzyFSs69Cezg
+      type: string
+  results:
+    - name: PIN_ADDED
+      description: IPFS CID of the build artifacts      
+  steps:
+    - name: build-with-new-magic-numbers
+      image: electriccoinco/zcash-in-a-box-runner:latest
+      script: |
+        #!/bin/bash
+        set -e -o pipefail
+        set -x
+        # Get the tnbox.py script
+
+        mkdir -p source/zcutil/tnbox/
+        ipfs --api $(params.ipfs-api-service) \
+          get /ipfs/$(params.TNBOX_SCRIPT_CID) \
+          --output=source/zcutil/tnbox/tnbox.py
+        # Create python venv
+        python3 -m venv /venv/zcash-build-venv
+        source /venv/zcash-build-venv/bin/activate
+        # Run tnbox.py
+        cd source/zcutil/tnbox/
+        python ./tnbox.py
+        cd /workspace/source
+        # Test that the script make changes, exit if it didn't
+        if git diff --exit-code;then echo "No diff, exiting";exit 1;fi          
+        # Build zcashd
+        CONFIGURE_FLAGS="--enable-online-rust" ./zcutil/build.sh -j$(params.JOBS)
+        # Package tnb artifacts
+        tar --strip-components 3 \
+          -zvcf ./zcashd-tnb-artifacts-${GIT_COMMIT}.tgz \
+          /workspace/source/src/zcashd \
+          /workspace/source/src/zcash-cli \
+          /workspace/source/src/zcash-gtest \
+          /workspace/source/src/zcash-tx
+        # Pin to ipfs
+        ipfs --api $(params.ipfs-api-service) \
+          add --quieter ./zcashd-tnb-artifacts-${GIT_COMMIT}.tgz \
+          | tee /tekton/results/PIN_ADDED
+        

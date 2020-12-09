@@ -1,0 +1,30 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: ipfs-get-cid
+spec:    
+  params:
+    - name: CID_TO_GET
+      type: string
+      description: The IPFS CID to get.
+    - name: DESTINATION
+      type: string
+      description: Where to save CID_TO_GET
+    - name: ipfs-api-service
+      type: string
+      description: The ipfs service dns name
+      default: /dns/ipfs-cache/tcp/5001
+  workspaces:
+    - name: output
+      mountPath: /workspace/output  
+  steps:
+    - name: ipfs-get-cid
+      image: electriccoinco/zcash-in-a-box-runner
+      script: |
+        #!/bin/bash
+        set -exo pipefail
+
+        ipfs --api $(params.ipfs-api-service) \
+          get --output=/workspace/output/$(params.DESTINATION) \
+          /ipfs/$(params.CID_TO_GET)

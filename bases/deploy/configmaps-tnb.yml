@@ -6,7 +6,12 @@ metadata:
 data:
   ARCHIVE_NAME: zcashd-tnb-artifacts-d058568.tgz
   ARCHIVE_HTTP_SRC: "https://gateway.pinata.cloud/ipfs/QmWwGVqBkWHFd6AqYZSsZZG4tQ9AoiQAG2i9pGoqGp2Mhp"
+  ARTIFACTS_NAME: zcashd-tnb-artifacts-d058568.tgz
+  ARTIFACTS_IPFSCID: QmWwGVqBkWHFd6AqYZSsZZG4tQ9AoiQAG2i9pGoqGp2Mhp
+  ARTIFACTS_HTTP_SRC: "https://gateway.pinata.cloud/ipfs/QmWwGVqBkWHFd6AqYZSsZZG4tQ9AoiQAG2i9pGoqGp2Mhp"
+  ZCASH_PARAMS_IPFSCID: QmUSFo5zgPPXXejidzFWZcxVyF3AJH6Pr9br6Xisdww1r1
   SNAPSHOT_NAME: zcash-testnet-miner-1014515.tgz
+  SNAPSHOT_IPFSCID: QmYj6AN8WziHikUjjoYTS1bGESTQkzXoMyzRKpa1H5gYv5
   SNAPSHOT_HTTP_SRC: "https://gateway.pinata.cloud/ipfs/QmYj6AN8WziHikUjjoYTS1bGESTQkzXoMyzRKpa1H5gYv5"
 ---
 apiVersion: v1

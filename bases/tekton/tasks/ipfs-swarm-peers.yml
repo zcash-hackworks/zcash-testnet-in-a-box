@@ -1,0 +1,26 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: ipfs-swarm-peers
+  labels:
+    ipfs: swarm-peers
+spec:
+  taskSpec:
+    params:
+      - name: ipfs-api-service
+        type: string
+        description: The ipfs service dns name
+        default: /dns/ipfs-cache/tcp/5001
+    steps:
+      - name: ipfs-swarm-peers
+        image: electriccoinco/zcash-in-a-box-runner
+        script: |
+          #!/bin/bash
+          set -exo pipefail
+          ipfs --api $(params.ipfs-api-service) \
+            swarm connect /dnsaddr/nyc1-2.hostnodes.pinata.cloud
+          ipfs --api $(params.ipfs-api-service) \
+            swarm connect /dnsaddr/nyc1-2.hostnodes.pinata.cloud
+          ipfs --api $(params.ipfs-api-service) \
+            swarm connect /dnsaddr/nyc1-2.hostnodes.pinata.cloud
