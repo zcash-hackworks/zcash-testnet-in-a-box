@@ -42,19 +42,25 @@ kubectl get taskruns -w
 # Use a wait command for scripting
 kubectl wait --for=condition=Succeeded taskruns -l import=zcash-snapshot-ipfs  --timeout=6000s
 
-## Taking forever? Add a peer that has these CIDs
-# Expose the port for IPFS API locally
-# kubectl port-forward svc/ipfs-cache 5001:5001
+## Taking forever? Depending on you geo-location it might be helpful to add some peers:
+#  Expose the port for IPFS API locally
+#  (You MUST wait for the initial pods to go from `Pending` to 
+# `Running` before issueing below command(wait ~30 seconds), after `kubectl get taskruns -w`)
+#
+# kubectl port-forward svc/ipfs-cache 5002:5001 &
+# ipfs --api=/ip4/127.0.0.1/tcp/5002 swarm connect /dnsaddr/nyc1-1.hostnodes.pinata.cloud
+# ipfs --api=/ip4/127.0.0.1/tcp/5002 swarm connect /dnsaddr/nyc1-2.hostnodes.pinata.cloud
+# ipfs --api=/ip4/127.0.0.1/tcp/5002 swarm connect /dnsaddr/nyc1-3.hostnodes.pinata.cloud
 
 # Download the ipfs binary from https://dist.ipfs.io/#go-ipfs
 # Use it to connect the ipfs-cache to a peer (this is one I set up)
 # If you change port numbers, use the ipfs --api flag to specify the endpoint
 # ipfs swarm connect  /ip4/192.241.134.110/tcp/4001/p2p/QmVgxJPDHLXZ3rTiuFHjByDbGCfEDSE5EJPTwYwanxUv3e 
 
-# Checking on status
-
 ## Open a port to the Grafana dashboard
-kubectl port-forward svc/monitoring 0.0.0.0:3000:3000 &
+kubectl port-forward svc/monitoring 3000:3000 &
+
+Browse to http://localhost:3000/d/mIrc97CCz/zcash-testnet-in-a-box
 
 # View the logs of BOTH deployed miners
 kubectl logs -l "app=zcash-with-exporter" -c zcashd-script -f
@@ -62,3 +68,5 @@ kubectl logs -l "app=zcash-with-exporter" -c zcashd-script -f
 
 # View the peering process for errors
 kubectl logs -l "app=zcashd-peers"
+
+# You can also make use of Lens: https://github.com/zcash-hackworks/zcash-testnet-in-a-box#using-lens-ide

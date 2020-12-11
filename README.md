@@ -3,8 +3,8 @@
 TNB (testnet-in-a-box) will deploy a collection of monitored and peered zcashd instances to a Kubernetes cluster.
 
 A deployment requires 2 tar archives:
-- An archive of binaries from a TNB build (zcashd, zcash-cli, zcash-gtest, zcash-tx) see the task for more info: [./tekton/tasks/build-binary-tnb.yml](./tekton/tasks/build-binary-tnb.yml)
-- An archive of a block snapshot from the regular testnet, see the task for more info: [./tekton/tasks/snapshot-gcp.yml](./tekton/tasks/snapshot-gcp.yml)
+- An archive of binaries from a TNB build (zcashd, zcash-cli, zcash-gtest, zcash-tx) see the task for more info: [./docs/BUILD-zcashd-tnb-artifacts-ipfs.md](./docs/BUILD-zcashd-tnb-artifacts-ipfs.md)
+- An archive of a block snapshot from the regular testnet, see the task for more info: [./bases/tekton/tasks/snapshot-gcp.yml ](./bases/tekton/tasks/snapshot-gcp.yml)
 
 The versions and source of these archives is defined in `deploy/configmaps-tnb.yml`
 
@@ -24,7 +24,7 @@ data:
 ## Deployment
 
 Install [kind](https://kind.sigs.k8s.io/docs/user/quick-start/)  
-See [./README.sh](./README.sh)
+See [./README-ipfs.sh](./README-ipfs.sh)
 
 (Important note: As of 7-30-2020, please do not run README.sh as a script. Instead copy/paste commands into terminal.)
 
