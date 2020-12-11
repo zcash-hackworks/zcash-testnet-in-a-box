@@ -10,9 +10,9 @@ data:
   ARTIFACTS_IPFSCID: QmQXeLrPo1cWbjoLdMdwCHjynmFiBUSqLhMSUTSZUzZMQR
   ARTIFACTS_HTTP_SRC: "https://gateway.pinata.cloud/ipfs/QmQXeLrPo1cWbjoLdMdwCHjynmFiBUSqLhMSUTSZUzZMQR"
   ZCASH_PARAMS_IPFSCID: QmUSFo5zgPPXXejidzFWZcxVyF3AJH6Pr9br6Xisdww1r1
-  SNAPSHOT_NAME: zcash-testnet-miner-1014515.tgz
-  SNAPSHOT_IPFSCID: QmYj6AN8WziHikUjjoYTS1bGESTQkzXoMyzRKpa1H5gYv5
-  SNAPSHOT_HTTP_SRC: "https://gateway.pinata.cloud/ipfs/QmYj6AN8WziHikUjjoYTS1bGESTQkzXoMyzRKpa1H5gYv5"
+  SNAPSHOT_NAME: zcash-testnet-miner-1199334.tgz
+  SNAPSHOT_IPFSCID: QmU51qV1efNJtZKKnHp71TWpkdMBpYfSsYhWLmdNj3BNsd
+  SNAPSHOT_HTTP_SRC: "https://gateway.pinata.cloud/ipfs/QmU51qV1efNJtZKKnHp71TWpkdMBpYfSsYhWLmdNj3BNsd"
 ---
 apiVersion: v1
 kind: ConfigMap
