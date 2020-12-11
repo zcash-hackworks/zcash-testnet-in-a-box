@@ -4,11 +4,11 @@ kind: ConfigMap
 metadata:
   name: zcash-tnb-bundle
 data:
-  ARCHIVE_NAME: zcashd-tnb-artifacts-d058568.tgz
-  ARCHIVE_HTTP_SRC: "https://gateway.pinata.cloud/ipfs/QmRwNMJuJPuPse9eXPv2WHaQ17CkZZyNeGzZhicaxztjGx"
-  ARTIFACTS_NAME: zcashd-tnb-artifacts-d058568.tgz
-  ARTIFACTS_IPFSCID: QmRwNMJuJPuPse9eXPv2WHaQ17CkZZyNeGzZhicaxztjGx
-  ARTIFACTS_HTTP_SRC: "https://gateway.pinata.cloud/ipfs/QmRwNMJuJPuPse9eXPv2WHaQ17CkZZyNeGzZhicaxztjGx"
+  ARCHIVE_NAME: zcashd-tnb-artifacts-6d85686.tgz
+  ARCHIVE_HTTP_SRC: "https://gateway.pinata.cloud/ipfs/QmQXeLrPo1cWbjoLdMdwCHjynmFiBUSqLhMSUTSZUzZMQR"
+  ARTIFACTS_NAME: zcashd-tnb-artifacts-6d85686.tgz
+  ARTIFACTS_IPFSCID: QmQXeLrPo1cWbjoLdMdwCHjynmFiBUSqLhMSUTSZUzZMQR
+  ARTIFACTS_HTTP_SRC: "https://gateway.pinata.cloud/ipfs/QmQXeLrPo1cWbjoLdMdwCHjynmFiBUSqLhMSUTSZUzZMQR"
   ZCASH_PARAMS_IPFSCID: QmUSFo5zgPPXXejidzFWZcxVyF3AJH6Pr9br6Xisdww1r1
   SNAPSHOT_NAME: zcash-testnet-miner-1014515.tgz
   SNAPSHOT_IPFSCID: QmYj6AN8WziHikUjjoYTS1bGESTQkzXoMyzRKpa1H5gYv5
