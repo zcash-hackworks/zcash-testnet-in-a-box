@@ -6,8 +6,9 @@ kind delete cluster --name zcash-testnet-in-a-box || true
 kind create cluster --name zcash-testnet-in-a-box
 kubectl cluster-info
 
-kubectl apply -f bases/tekton/releases/tekton-pipelines-v0.13.2.yml
-kubectl apply -f bases/tekton/releases/tekton-dashboard-v0.7.0.yml
+#Core Tekton CI/CD for creating local zcash tnb artifacts(e.g. binary and chain data)
+kubectl apply -f bases/tekton/releases/tekton-pipelines-v0.26.0.yaml
+kubectl apply -f bases/tekton/releases/tekton-dashboard-v0.18.1.yaml
 
 kubectl apply -k bases/
 
