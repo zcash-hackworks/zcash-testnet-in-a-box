@@ -23,7 +23,7 @@ spec:
       description: The ipfs service dns name
       default: /dns/ipfs-cache/tcp/5001
     - name: TNBOX_SCRIPT_CID
-      default: QmdcXSthqb89VF3CwtFXYHiSVZTCrggWPsDzyFSs69Cezg
+      default: QmX8X1R74mC6esony6Tc5fRPXk9PchhvyGsyDAxodA9RQ6
       type: string
   results:
     - name: PIN_ADDED
@@ -35,17 +35,17 @@ spec:
         #!/bin/bash
         set -e -o pipefail
         set -x
-        # Get the tnbox.py script
 
-        mkdir -p source/zcutil/tnbox/
+        # Get the tnbox.py script
+        mkdir -p /workspace/source/zcutil/tnbox/
         ipfs --api $(params.ipfs-api-service) \
           get /ipfs/$(params.TNBOX_SCRIPT_CID) \
-          --output=source/zcutil/tnbox/tnbox.py
+          --output=/workspace/source/zcutil/tnbox/tnbox.py
         # Create python venv
         python3 -m venv /venv/zcash-build-venv
         source /venv/zcash-build-venv/bin/activate
         # Run tnbox.py
-        cd source/zcutil/tnbox/
+        cd /workspace/source/zcutil/tnbox
         python ./tnbox.py
         cd /workspace/source
         # Test that the script make changes, exit if it didn't
